@@ -16,7 +16,7 @@ class AnimatedSprite {
         void addFrameCollection(std::string collectionName);
         void addFrameCollection(std::string collectionName, std::vector<sf::Sprite> collection);
         void play();
-        void update(sf::Time delta);
+        void update(sf::Time delta, bool isUpdateFrame);
         void draw();
     private:
         std::string imgPath;

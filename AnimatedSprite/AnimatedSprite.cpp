@@ -60,12 +60,12 @@ void AnimatedSprite::setCurrentAnimation(std::string collectionName) {
     currentAnimation = frame_collections[collectionName];
 }
 
-void AnimatedSprite::update(sf::Time delta) {
+void AnimatedSprite::update(sf::Time delta, bool isUpdateFrame) {
     curTime += delta;
     if (curTime >= frameTime) {
         // resetting the currentTime
         curTime = sf::microseconds(curTime.asMicroseconds() % frameTime.asMicroseconds());
-        if (currentFrame + 1 < currentAnimation.size()) currentFrame++;
+        if (currentFrame + 1 < currentAnimation.size() && isUpdateFrame) currentFrame++;
         else {
             currentFrame = 0;
         }
