@@ -7,10 +7,9 @@ AnimatedSprite::AnimatedSprite (std::string imgPath) {
     if (!texture.loadFromFile(imgPath)) {
         throw "Cannot continue, image load failed";
     }
-    std::cout << "created!" << std::endl;
 }
 AnimatedSprite::~AnimatedSprite () {
-    std::cout << "destroyed!" << std::endl;
+    // std::cout << "destroyed!" << std::endl;
 }
 
 sf::Sprite AnimatedSprite::getCurrentFrame(std::string collectionName){
