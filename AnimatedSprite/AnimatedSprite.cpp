@@ -1,10 +1,10 @@
 #include <iostream>
 #include "./AnimatedSprite.hpp"
 
-AnimatedSprite::AnimatedSprite (std::string imagePath) {
-    _imgPath = imagePath;
-    _currentFrame = 0;
-    if (!_texture.loadFromFile(_imgPath)) {
+AnimatedSprite::AnimatedSprite (std::string imgPath) {
+    this->imgPath = imgPath;
+    currentFrame = 0;
+    if (!texture.loadFromFile(imgPath)) {
         throw "Cannot continue, image load failed";
     }
     std::cout << "created!" << std::endl;
@@ -14,59 +14,61 @@ AnimatedSprite::~AnimatedSprite () {
 }
 
 sf::Sprite AnimatedSprite::getCurrentFrame(std::string collectionName){
-    _frame_collections[collectionName][_currentFrame].setPosition(_position); // updating the position
-    return _frame_collections[collectionName][_currentFrame];
+    sf::Sprite frame = frame_collections[collectionName][currentFrame];
+    frame.setPosition(position); // updating the position
+    return frame;
 }
 
 sf::Sprite AnimatedSprite::getCurrentFrame(){
-    _currentAnimation[_currentFrame].setPosition(_position); // updating the position
-    return _currentAnimation[_currentFrame];
+    sf::Sprite frame = currentAnimation[currentFrame];
+    frame.setPosition(position); // updating the position
+    return frame;
 }
 
 void AnimatedSprite::addFrame(std::string collectionName, sf::IntRect rect) {
-    sf::Sprite sprite(_texture, rect);
-    _frame_collections[collectionName].push_back(sprite);
+    sf::Sprite sprite(texture, rect);
+    frame_collections[collectionName].push_back(sprite);
 }
 
-void AnimatedSprite::setPosition(sf::Vector2f pos){
-    _position = pos;
+void AnimatedSprite::setPosition(sf::Vector2f position){
+    this->position = position;
 }
 
 sf::Vector2f AnimatedSprite::getPosition() {
-    return _position;
+    return position;
 }
 
 void AnimatedSprite::addFrameCollection(std::string collectionName) {
-    _frame_collections[collectionName] = {};
+    frame_collections[collectionName] = {};
 }
 
 void AnimatedSprite::addFrameCollection(std::string collectionName, std::vector<sf::Sprite> collection ) {
-    _frame_collections[collectionName] = collection;
+    frame_collections[collectionName] = collection;
 }
 
 void AnimatedSprite::play() {
-    _isPlaying = true;
+    isPlaying = true;
 }
 
 void AnimatedSprite::setFrameTimer(sf::Time seconds) {
-    _frameTime = seconds;
+    frameTime = seconds;
 }
 
 std::vector<sf::Sprite> AnimatedSprite::getCurrentAnimation() {
-    return _currentAnimation;
+    return currentAnimation;
 }
 void AnimatedSprite::setCurrentAnimation(std::string collectionName) {
-    _currentAnimation = _frame_collections[collectionName];
+    currentAnimation = frame_collections[collectionName];
 }
 
 void AnimatedSprite::update(sf::Time delta) {
-    _curTime += delta;
-    if (_curTime >= _frameTime) {
+    curTime += delta;
+    if (curTime >= frameTime) {
         // resetting the currentTime
-        _curTime = sf::microseconds(_curTime.asMicroseconds() % _frameTime.asMicroseconds());
-        if (_currentFrame + 1 < _currentAnimation.size()) _currentFrame++;
+        curTime = sf::microseconds(curTime.asMicroseconds() % frameTime.asMicroseconds());
+        if (currentFrame + 1 < currentAnimation.size()) currentFrame++;
         else {
-            _currentFrame = 0;
+            currentFrame = 0;
         }
     }
 }
